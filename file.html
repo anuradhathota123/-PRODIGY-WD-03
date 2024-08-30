@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tic-Tac-Toe</title>
+	<style>
+		#game-board {
+			display: grid;
+			grid-template-columns: repeat(3, 100px);
+			grid-gap: 5px;
+			background-color: #f0f0f0;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		.cell {
+			background-color: #fff;
+			padding: 20px;
+			cursor: pointer;
+			font-size: 24px;
+			text-align: center;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			transition: background-color 0.3s ease;
+		}
+		.cell:hover {
+			background-color: #ddd;
+		}
+		#reset-button {
+			background-color: #4CAF50;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 10px;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+		#reset-button:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h1 style="color: #333; font-size: 36px;">Tic-Tac-Toe</h1>
+	<div id="game-board">
+		<div class="cell" onclick="makeMove(this, 0)"></div>
+		<div class="cell" onclick="makeMove(this, 1)"></div>
+		<div class="cell" onclick="makeMove(this, 2)"></div>
+		<div class="cell" onclick="makeMove(this, 3)"></div>
+		<div class="cell" onclick="makeMove(this, 4)"></div>
+		<div class="cell" onclick="makeMove(this, 5)"></div>
+		<div class="cell" onclick="makeMove(this, 6)"></div>
+		<div class="cell" onclick="makeMove(this, 7)"></div>
+		<div class="cell" onclick="makeMove(this, 8)"></div>
+	</div>
+	<button id="reset-button">Reset Game</button>
+	<script>
+		let board = ['', '', '', '', '', '', '', '', ''];
+		let currentPlayer = 'X';
+		function makeMove(cell, index) {
+			if (board[index] === '') {
+				board[index] = currentPlayer;
+				cell.textContent = currentPlayer;
+				cell.style.backgroundColor = currentPlayer === 'X' ? '#ff9999' : '#99ff99';
+				if (checkWinner()) {
+					alert(`Player ${currentPlayer} wins!`);
+					resetGame();
+				} else {
+					currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+				}
+			}
+		}
+		function checkWinner() {
+			const winConditions = [
+				[0, 1, 2],
+				[3, 4, 5],
+				[6, 7, 8],
+				[0, 3, 6],
+				[1, 4, 7],
+				[2, 5, 8],
+				[0, 4, 8],
+				[2, 4, 6]
+			];
+			for (const condition of winConditions) {
+				if (board[condition[0]] !== '' &&
+					board[condition[0]] === board[condition[1]] &&
+					board[condition[0]] === board[condition[2]]) {
+					return true;
+				}
+			}
+			return false;
+		}
+		function resetGame() {
+			board = ['', '', '', '', '', '', '', '', ''];
+			currentPlayer = 'X';
+			document.querySelectorAll('.cell').forEach(cell => {
+				cell.textContent = '';
+				cell.style.backgroundColor = '#fff';
+			});
+		}
+		document.getElementById('reset-button').addEventListener('click', resetGame);
+	</script>
+</body>
+</html>
